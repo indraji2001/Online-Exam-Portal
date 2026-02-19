@@ -617,7 +617,7 @@
             gapi.load('client:auth2', () => {
                 gapi.client.init({
                     apiKey: 'YOUR_API_KEY',
-                    clientId: 'YOUR_CLIENT-ID',
+                    clientId: '670497066265-fqlae5ft60pn5eulscqalu6716227p2n.apps.googleusercontent.com',
                     discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
                     scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/spreadsheets'
                 }).then(() => {
@@ -640,7 +640,7 @@
             document.getElementById('authContainer').classList.remove('hidden');
             if (typeof google !== 'undefined') {
                 google.accounts.id.initialize({
-                    client_id: 'YOUR_CLIENT-ID',
+                    client_id: '670497066265-fqlae5ft60pn5eulscqalu6716227p2n.apps.googleusercontent.com',
                     callback: handleCredentialResponse
                 });
                 google.accounts.id.renderButton(
