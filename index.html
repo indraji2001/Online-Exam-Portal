@@ -613,25 +613,26 @@
         // GOOGLE API & AUTHENTICATION
         // ==========================================
         
-        function initGoogleApi() {
-    gapi.load('client:auth2', {
-        callback: function() {
-            gapi.client.init({
-                apiKey: 'AIzaSyDdUDx1O499R5H2Ikai2Hl-rDq_wYKcyC0',
-                clientId: '670497066265-fqlae5ft60pn5eulscqalu6716227p2n.apps.googleusercontent.com',
-                discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
-                scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/spreadsheets'
-            }).then(function() {
-                console.log('GAPI initialized successfully');
-                gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-            }).catch(function(error) {
-                console.error('Error initializing GAPI:', error);
+                        function initGoogleApi() {
+            gapi.load('client:auth2', {
+                callback: function() {
+                    gapi.client.init({
+                        apiKey: 'AIzaSyDdUDx1O499R5H2Ikai2Hl-rDq_wYKcyC0',
+                        clientId: '670497066265-fqlae5ft60pn5eulscqalu6716227p2n.apps.googleusercontent.com',
+                        discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
+                        scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/spreadsheets'
+                    }).then(function() {
+                        console.log('GAPI initialized successfully');
+                        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+                    }).catch(function(error) {
+                        console.error('Error initializing GAPI:', error);
+                    });
+                },
+                onerror: function() {
+                    console.error('Failed to load GAPI client');
+                }
             });
-        },
-        onerror: function() {
-            console.error('Failed to load GAPI client');
         }
-    });
 }
         function checkEnvironment() {
             const isGoogleSites = window.location.href.includes('google.com') || window.parent !== window;
@@ -703,21 +704,21 @@
         setupMainFolder();
     }, 1000);
 }
+        function switchGoogleAccount() {
+            if (gapi.auth2) {
+                gapi.auth2.getAuthInstance().signOut().then(() => {
+                    gapi.auth2.getAuthInstance().signIn({prompt: 'select_account'});
+                });
+            }
+        }
 
-    function switchGoogleAccount() {
-    if (gapi.auth2) {
-        gapi.auth2.getAuthInstance().signOut().then(() => {
-            gapi.auth2.getAuthInstance().signIn({prompt: 'select_account'});
-        });
-    }
-}
-
-function signOut() {
-    if (gapi.auth2) {
-        gapi.auth2.getAuthInstance().signOut().then(() => { 
-            location.reload(); 
-        });
-    }
+        function signOut() {
+            if (gapi.auth2) {
+                gapi.auth2.getAuthInstance().signOut().then(() => { 
+                    location.reload(); 
+                });
+            }
+        }
 }
 
         // ==========================================
@@ -725,8 +726,14 @@ function signOut() {
         // ==========================================
 
         // Step 1: Setup main folder (called once on login)
-        async function setupMainFolder() {
-            try {
+                        // Check if gapi.client is properly initialized
+                if (typeof gapi === 'undefined' || !gapi.client || !gapi.client.drive) {
+                    console.log('GAPI client not ready yet, retrying in 2 seconds...');
+                    setTimeout(setupMainFolder, 2000);
+                    return;
+                }
+                
+                console.log('Setting up Drive folders for:', DRIVE_CONFIG.mainFolder);
                 // Check if main folder exists
                 const response = await gapi.client.drive.files.list({
                     q: `name='${DRIVE_CONFIG.mainFolder}' and mimeType='application/vnd.google-apps.folder' and trashed=false`,
@@ -2486,6 +2493,7 @@ IMPORTANT: Ensure questions are original, syllabus-aligned, and have unambiguous
     </script>
 </body>
 </html>
+
 
 
 
