@@ -696,13 +696,15 @@
             if (currentUser.image) {
                 document.getElementById('userAvatar').src = currentUser.image;
                 document.getElementById('userAvatar').classList.remove('hidden');
-            }
-            
-            // Initialize main folder structure after slight delay to ensure API is ready
-setTimeout(() => {
-    setupMainFolder();
-}, 1000);
+                   }
+        
+        // Initialize main folder structure after slight delay to ensure API is ready
+        setTimeout(() => {
+            setupMainFolder();
+        }, 1000);
+    }  // <-- ADD THIS: Close handleAuthSuccess() function
 
+    function switchGoogleAccount() {  // <-- Remove extra indentation
         function switchGoogleAccount() {
             if (gapi.auth2) {
                 gapi.auth2.getAuthInstance().signOut().then(() => {
@@ -2485,6 +2487,7 @@ IMPORTANT: Ensure questions are original, syllabus-aligned, and have unambiguous
     </script>
 </body>
 </html>
+
 
 
 
