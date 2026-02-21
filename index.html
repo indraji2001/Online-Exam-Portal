@@ -685,41 +685,40 @@
             }
         }
 
-        function handleAuthSuccess() {
-            document.getElementById('authContainer').classList.add('hidden');
-            document.getElementById('mainPortal').classList.remove('hidden');
-            document.getElementById('accountBar').classList.remove('hidden');
-            document.getElementById('userName').textContent = currentUser.name;
-            document.getElementById('userEmail').textContent = currentUser.email;
-            document.getElementById('headerInstructor').textContent = currentUser.name;
-            
-            if (currentUser.image) {
-                document.getElementById('userAvatar').src = currentUser.image;
-                document.getElementById('userAvatar').classList.remove('hidden');
-                   }
-        
-        // Initialize main folder structure after slight delay to ensure API is ready
-        setTimeout(() => {
-            setupMainFolder();
-        }, 1000);
-    }  // <-- ADD THIS: Close handleAuthSuccess() function
+       function handleAuthSuccess() {
+    document.getElementById('authContainer').classList.add('hidden');
+    document.getElementById('mainPortal').classList.remove('hidden');
+    document.getElementById('accountBar').classList.remove('hidden');
+    document.getElementById('userName').textContent = currentUser.name;
+    document.getElementById('userEmail').textContent = currentUser.email;
+    document.getElementById('headerInstructor').textContent = currentUser.name;
+    
+    if (currentUser.image) {
+        document.getElementById('userAvatar').src = currentUser.image;
+        document.getElementById('userAvatar').classList.remove('hidden');
+    }
 
-    function switchGoogleAccount() {  // <-- Remove extra indentation
-        function switchGoogleAccount() {
-            if (gapi.auth2) {
-                gapi.auth2.getAuthInstance().signOut().then(() => {
-                    gapi.auth2.getAuthInstance().signIn({prompt: 'select_account'});
-                });
-            }
-        }
+    // Initialize main folder structure after slight delay to ensure API is ready
+    setTimeout(() => {
+        setupMainFolder();
+    }, 1000);
+}
 
-        function signOut() {
-            if (gapi.auth2) {
-                gapi.auth2.getAuthInstance().signOut().then(() => { 
-                    location.reload(); 
-                });
-            }
-        }
+    function switchGoogleAccount() {
+    if (gapi.auth2) {
+        gapi.auth2.getAuthInstance().signOut().then(() => {
+            gapi.auth2.getAuthInstance().signIn({prompt: 'select_account'});
+        });
+    }
+}
+
+function signOut() {
+    if (gapi.auth2) {
+        gapi.auth2.getAuthInstance().signOut().then(() => { 
+            location.reload(); 
+        });
+    }
+}
 
         // ==========================================
         // DRIVE FOLDER MANAGEMENT (v4.2)
@@ -2487,6 +2486,7 @@ IMPORTANT: Ensure questions are original, syllabus-aligned, and have unambiguous
     </script>
 </body>
 </html>
+
 
 
 
